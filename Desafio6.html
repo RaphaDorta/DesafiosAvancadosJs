@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Moedas (via API)</title>
+</head>
+<body>
+    <p>
+        🟢 6. Conversor de Moedas (via API) <br>
+        Faça um campo para inserir valor em reais (BRL) e converter para dólar ou euro. <br>
+        Use a API gratuita: https://api.exchangerate-api.com/v4/latest/BRL <br>
+        Mostre o resultado formatado com Intl.NumberFormat
+    </p>
+
+    <input type="number" id="valorReais" placeholder="Digite o valor em reais">
+    <p id="valorDolar"></p> <br>
+    <p id="valorEuro"></p>
+
+    <script>
+        const realInput = document.getElementById("valorReais");
+        const dolarOutput = document.getElementById("valorDolar");
+        const euroOutput = document.getElementById("valorEuro");
+
+        let cotacoes = {};
+
+        fetch("https://api.exchangerate-api.com/v4/latest/BRL")
+            
+            .then(res => res.json())
+            .then(dados => {
+                cotacoes = dados.rates;
+            })
+            .catch(err => {
+                console.error("Erro ao buscar as cotações:", err);
+            });
+
+        realInput.addEventListener("input", () => {
+            const valor = parseFloat(realInput.value);
+
+            if (isNaN(valor)){
+                dolarOutput.textContent = "";
+                euroOutput.textContent = "";
+                return;
+            }
+
+            const valorDolar = valor*cotacoes.USD;
+            const valorEuro = valor*cotacoes.EUR
+
+            dolarOutput.textContent = `💵 Dólar: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(valorDolar)}`;
+            euroOutput.textContent = `💶 Euro: ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(valorEuro)}`;
+        });
+    </script>
+</body>
+</html>

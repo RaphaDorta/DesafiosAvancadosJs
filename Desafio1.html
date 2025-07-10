@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Alternar Tema</title>
+    <style>
+        .dark {
+        background-color: black;
+        color: white;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        🟢 1. Alternar Modo Claro / Escuro <br>
+        Crie um botão que muda o tema da página entre claro e escuro. <br>
+        Use classList.toggle() <br>
+        Salve a preferência no localStorage para manter após recarregar   
+    </p>
+    
+    <button id="temaBtn">Alterar tema</button>
+
+    <script>
+        const botao = document.getElementById('temaBtn');
+        const corpo = document.body;
+
+        // Verifica se já tem uma preferência salva
+        const temaSalvo = localStorage.getItem('tema');
+
+        if (temaSalvo === 'dark') {
+            corpo.classList.add('dark');
+        }
+
+        botao.addEventListener('click', () => {
+            corpo.classList.toggle('dark');
+
+            // Salva a preferência no localStorage
+            if (corpo.classList.contains('dark')) {
+                localStorage.setItem('tema', 'dark');
+            } else {
+                localStorage.setItem('tema', 'light');
+            }
+        });
+  </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relógio Digital ao Vivo</title>
+</head>
+    <style>
+        #relogio {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 3em;
+            color: #00bfff;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+<body>
+    <p>
+        🟢 8. Relógio Digital ao Vivo <br>
+        Exiba um relógio no topo da página. <br>
+        Atualize a cada segundo com setInterval <br>
+        Mostre: HH:MM:SS <br>
+        Estilize com cores e fonte moderna
+    </p>
+
+    <p id="relogio"></p>
+
+    <script>
+        function atualizarRelogio() {
+            const agora = new Date();
+            console.log(agora)
+            const horas = String(agora.getHours()).padStart(2, '0');
+            const minutos = String(agora.getMinutes()).padStart(2, '0');
+            const segundos = String(agora.getSeconds()).padStart(2, '0');
+
+            const horarioFormatado = `${horas}:${minutos}:${segundos}`;
+
+            document.getElementById('relogio').textContent = horarioFormatado;
+        }
+
+        // Atualiza o relógio imediatamente ao carregar
+        atualizarRelogio();
+
+        // E depois a cada segundo
+        setInterval(atualizarRelogio, 1000);
+    </script>
+</body>
+</html>

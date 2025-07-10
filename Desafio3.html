@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Cliques com Memória</title>
+</head>
+<body>
+    <p>
+        🟢 3. Contador de Cliques com Memória <br>
+        Um botão que conta quantas vezes foi clicado. <br>
+        Mostra na tela o número de cliques <br>
+        O valor persiste com localStorage <br>
+        Botão “Resetar contador”
+    </p>
+
+    <button id="contadorBtn">Clique aqui</button>
+    <button id="resetarBtn">Restar contador</button>
+    <p id="cliques"></p>
+
+    <script>
+        const contadorBtn = document.getElementById('contadorBtn');
+        const resetarBtn = document.getElementById('resetarBtn');
+        const cliquesTexto = document.getElementById('cliques') 
+        
+        // Recupera o valor salvo (ou começa com 0)
+        let contador = parseInt(localStorage.getItem('contador')) || 0;
+
+        function atualizarTela(){
+            cliquesTexto.textContent = `Quantidades de cliques: ${contador}`;
+            localStorage.setItem('contador', contador);
+        }
+
+        contadorBtn.addEventListener('click', () => {
+            contador++;
+            atualizarTela();
+        });
+
+        resetarBtn.addEventListener('click', () => {
+            contador = 0;
+            atualizarTela();
+        });
+
+        atualizarTela();
+    </script>
+</body>
+</html>

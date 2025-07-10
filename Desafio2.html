@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de Tarefas com Salvamento</title>
+  <style>
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    td button {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <p>
+    🔴 2. Lista de Tarefas com Salvamento <br>
+    Crie um campo de input e uma lista de tarefas que: <br>
+    Permite adicionar novas tarefas <br>
+    Permite marcar como concluída (com ✔️) <br>
+    Permite remover tarefa <br>
+    Salva tudo no localStorage
+  </p>
+
+  <input type="text" id="addtarefa" placeholder="Adicionar tarefa" />
+  <button id="tarefasBtn">Adicionar Tarefa</button>
+
+  <br><br>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tarefa</th>
+        <th>Status</th>
+        <th>Remover</th>
+      </tr>
+    </thead>
+    <tbody id="listaTarefas"></tbody>
+  </table>
+
+  <script>
+    let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+
+    const addtarefa = document.getElementById('addtarefa');
+    const tarefasBtn = document.getElementById('tarefasBtn');
+    const listaTarefas = document.getElementById('listaTarefas');
+
+    function salvarTarefas() {
+      localStorage.setItem('tarefas', JSON.stringify(tarefas));
+    }
+
+    function renderizarTarefas() {
+      listaTarefas.innerHTML = '';
+
+      tarefas.forEach((tarefa, index) => {
+        const linha = document.createElement('tr');
+
+        linha.innerHTML = `
+          <td>${tarefa.texto}</td>
+          <td style="text-align: center;"><button class="statusBtn">${tarefa.concluida ? '✔️' : '🔴'}</button></td>
+          <td style="text-align: center;"><button class="removerBtn">🗑️</button></td>
+        `;
+
+        // Botão de status
+        linha.querySelector('.statusBtn').addEventListener('click', () => {
+          tarefa.concluida = !tarefa.concluida;
+          salvarTarefas();
+          renderizarTarefas();
+        });
+
+        // Botão de remover
+        linha.querySelector('.removerBtn').addEventListener('click', () => {
+          tarefas.splice(index, 1);
+          salvarTarefas();
+          renderizarTarefas();
+        });
+
+        listaTarefas.appendChild(linha);
+      });
+    }
+
+    tarefasBtn.addEventListener('click', () => {
+      const texto = addtarefa.value.trim();
+      if (texto === '') {
+        alert('Digite uma tarefa!');
+        return;
+      }
+
+      tarefas.push({ texto, concluida: false });
+      salvarTarefas();
+      renderizarTarefas();
+
+      addtarefa.value = '';
+      addtarefa.focus();
+    });
+
+    // Renderiza ao carregar
+    renderizarTarefas();
+  </script>
+</body>
+</html>

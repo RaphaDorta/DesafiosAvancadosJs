@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>
+        🟢 7. Validador de Formulário <br>
+        Crie um formulário com nome, email e idade. <br>
+        Valide: <br>
+        Nome obrigatório <br> 
+        Email deve conter @ <br>
+        Idade deve ser número ≥ 18 <br>
+        Exiba mensagens de erro em vermelho <br>
+        Permita salvar os dados no localStorage
+    </p>
+
+    <input type="text" id="name" placeholder="Insira seu nome"><br>
+    <input type="email" id="email" placeholder="Insira um e-mail válido"><br>
+    <input type="number" id="age" placeholder="Informe sua idade"><br><br>
+    <button id="enviarBtn">Enviar</button>
+
+    <div id="mensagens"></div>
+    
+    <script>
+        const userName = document.getElementById('name');
+        const userEmail = document.getElementById('email');
+        const userAge = document.getElementById('age');
+        const enviarBtn = document.getElementById('enviarBtn');
+        const mensagens = document.getElementById('mensagens');
+        
+        enviarBtn.addEventListener('click', () => {
+            mensagens.innerHTML = ''; // limpa mensagens anteriores
+            let erro = false;
+
+            if (userName.value.trim() === '') {
+                mensagens.innerHTML += `<p style="color: red">Nome é obrigatório</p>`;
+                erro = true;
+            }
+
+            if (!userEmail.value.includes('@')) {
+                mensagens.innerHTML += `<p style="color: red">E-mail inválido (deve conter @)</p>`;
+                erro = true;
+            }
+
+            if (parseInt(userAge.value) < 18 || userAge.value.trim() === '') {
+                mensagens.innerHTML += `<p style="color: red">Idade deve ser maior ou igual a 18</p>`;
+                erro = true;
+            }
+
+            if (!erro) {
+                // Salvar no localStorage
+                const dados = {
+                nome: userName.value.trim(),
+                email: userEmail.value.trim(),
+                idade: parseInt(userAge.value)
+                };
+
+                localStorage.setItem('usuario', JSON.stringify(dados));
+                mensagens.innerHTML = `<p style="color: green">Dados salvos com sucesso!</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

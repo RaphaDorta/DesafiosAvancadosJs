@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Senhas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        #senha {
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <p>
+        🟢 10. Gerador de Senhas <br>
+        Gere senhas aleatórias com opções: <br>
+        Tamanho (ex: 8 a 16 caracteres) <br>
+        Incluir letras maiúsculas, números e símbolos <br>
+        Copiar para área de transferência
+    </p>
+
+    <label for="tamanho">Tamanho da senha (8 a 16):</label>
+    <input type="number" id="tamanho" min="8" max="16" value="12">
+
+    <label><input type="checkbox" id="minusculas" checked> Incluir letras minúsculas</label>
+    <label><input type="checkbox" id="maiusculas" checked> Incluir letras maiúsculas</label>
+    <label><input type="checkbox" id="numeros" checked> Incluir números</label>
+    <label><input type="checkbox" id="simbolos"> Incluir símbolos</label>
+
+    <br>
+    <button id="gerarBtn">Gerar Senha</button>
+    <button id="copiarBtn">Copiar</button>
+
+    <p id="senha">Sua senha aparecerá aqui</p>
+
+    <script>
+        const gerarBtn = document.getElementById("gerarBtn");
+        const copiarBtn = document.getElementById("copiarBtn");
+        const senhaEl = document.getElementById("senha");
+
+        const letrasMin = "abcdefghijklmnopqrstuvwxyz";
+        const letrasMai = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const numeros = "0123456789";
+        const simbolos = "!@#$%^&*()_-+=<>?/";
+
+        gerarBtn.addEventListener("click", () => {
+            const tamanho = parseInt(document.getElementById("tamanho").value);
+            
+            const incluirMin = document.getElementById("minusculas").checked;
+            const incluirMai = document.getElementById("maiusculas").checked;
+            const incluirNum = document.getElementById("numeros").checked;
+            const incluirSim = document.getElementById("simbolos").checked;
+
+            let caracteres = "";
+
+            if (incluirMin) caracteres += letrasMin;
+            if (incluirMai) caracteres += letrasMai;
+            if (incluirNum) caracteres += numeros;
+            if (incluirSim) caracteres += simbolos;
+
+            let senha = "";
+            for (let i = 0; i < tamanho; i++) {
+                const randomIndex = Math.floor(Math.random() * caracteres.length);
+                senha += caracteres[randomIndex];
+            }
+
+            senhaEl.textContent = senha;
+        });
+
+        copiarBtn.addEventListener("click", () => {
+            const texto = senhaEl.textContent;
+            if (texto && texto !== "Sua senha aparecerá aqui") {
+                navigator.clipboard.writeText(texto)
+                    .then(() => alert("Senha copiada para a área de transferência!"))
+                    .catch(() => alert("Erro ao copiar a senha."));
+            }
+        });
+    </script>
+</body>
+
+</html>

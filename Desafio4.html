@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Agenda com Objetos</title>
+    <style>
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        td button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        🟢 4. Mini Agenda com Objetos <br>
+        Crie uma lista de contatos com nome, telefone e email. <br>
+        Mostre os contatos numa tabela <br>
+        Permita adicionar e excluir <br>
+        Use array de objetos + localStorage
+    </p>
+
+    <input type="text" id="nome" placeholder="Nome do contato">
+    <input type="tel" id="telefone" placeholder="Telefone do contato">
+    <input type="email" id="email" placeholder="Email do contato">
+    <button id="adicionarBtn" >Adicionar contato</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="dadosContatos"></tbody>
+    </table>
+
+    <script>
+        let contatos = JSON.parse(localStorage.getItem('contatos')) || [];
+
+        const nome = document.getElementById('nome');
+        const telefone = document.getElementById('telefone');
+        const email = document.getElementById('email');
+        const dadosContatos = document.getElementById('dadosContatos');
+        const adicionarBtn = document.getElementById('adicionarBtn');
+        
+        function salvarContatos(){
+            localStorage.setItem('contatos', JSON.stringify(contatos));
+        }
+        
+        function renderizarContatos(){
+            dadosContatos.innerHTML = '';
+            
+            contatos.forEach((contato, index) => {
+                const linha = document.createElement('tr');
+        
+                linha.innerHTML = `
+                    <td>${contato.nome}</td>
+                    <td>${contato.telefone}</td>
+                    <td>${contato.email}</td>
+                    <td style="text-align: center;"><button class="removerBtn">🗑️</button></td>
+                `
+        
+                linha.querySelector('.removerBtn').addEventListener('click', () => {
+                    contatos.splice(index, 1);
+                    salvarContatos();
+                    renderizarContatos();
+                });
+            
+            dadosContatos.appendChild(linha)
+                
+            });
+        };
+
+        adicionarBtn.addEventListener("click", () => {
+            const novoNome = nome.value.trim();
+            const novoTelefone = telefone.value.trim();
+            const novoEmail = email.value.trim();
+            
+            if (novoNome === '' || novoEmail === '' || novoEmail === '') {
+                alert("Preencha todos os campos!");
+                return;
+            }
+
+            const novoContato = { 
+                nome: novoNome,
+                telefone: novoTelefone,
+                email: novoEmail
+            }
+
+            contatos.push(novoContato);
+            salvarContatos();
+            renderizarContatos();
+
+            nome.value = '';
+            telefone.value ='';
+            email.value = '';
+            nome.focus();
+        });
+
+        renderizarContatos();
+
+    </script>
+</body>
+</html>

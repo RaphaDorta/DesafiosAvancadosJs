@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz com 3 Perguntas</title>
+</head>
+
+<body>
+    <p>
+        🟢 9. Quiz com 3 Perguntas <br>
+        Crie um mini quiz com 3 perguntas de múltipla escolha. <br>
+        Cada pergunta com 3 alternativas <br>
+        Mostra nota ao final (Ex: “Você acertou 2 de 3”) <br>
+    </p>
+
+    <form id="quiz-js">
+        <div>
+            <p><strong>1. Qual destas palavras-chave é usada para declarar uma variável em JavaScript?</strong></p>
+            <label><input type="radio" name="q1" value="a"> def</label><br>
+            <label><input type="radio" name="q1" value="b"> var</label><br>
+            <label><input type="radio" name="q1" value="c"> let const</label>
+        </div>
+
+        <div>
+            <p><strong>2. Qual método JavaScript é usado para imprimir algo no console?</strong></p>
+            <label><input type="radio" name="q2" value="a"> print()</label><br>
+            <label><input type="radio" name="q2" value="b"> echo()</label><br>
+            <label><input type="radio" name="q2" value="c"> console.log()</label>
+        </div>
+
+        <div>
+            <p><strong>3. O que o operador `===` verifica em JavaScript?</strong></p>
+            <label><input type="radio" name="q3" value="a"> Apenas se os valores são iguais</label><br>
+            <label><input type="radio" name="q3" value="b"> Igualdade de valor e tipo</label><br>
+            <label><input type="radio" name="q3" value="c"> Se os objetos têm as mesmas propriedades</label>
+        </div>
+        <br>
+        <button type="submit" id="enviarRespostasBtn">Enviar respostas</button>
+    </form>
+
+    <div id="resultado"></div>
+
+    <script>
+        const quizForm = document.getElementById('quiz-js');
+        const resultado = document.getElementById('resultado');
+
+        quizForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Evita recarregar a página
+
+            const respostas = {
+                q1: quizForm.q1.value,
+                q2: quizForm.q2.value,
+                q3: quizForm.q3.value
+            };
+
+            const gabarito = {
+                q1: 'b',
+                q2: 'c',
+                q3: 'b'
+            };
+
+            let nota = 0;
+
+            Object.keys(gabarito).forEach(pergunta => {
+                if (respostas[pergunta] === gabarito[pergunta]) {
+                    nota++;
+                }
+            });
+
+            resultado.innerHTML = `<p><strong>Você acertou ${nota} de 3 perguntas.</strong></p>`;
+        });
+    </script>
+</body>
+</html>

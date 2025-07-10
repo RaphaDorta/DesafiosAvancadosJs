@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Usuários (com fetch)</title>
+</head>
+<body>
+    <p>
+        🟢 5. Buscador de Usuários (com fetch) <br>
+        Use a API https://jsonplaceholder.typicode.com/users <br>
+        Liste os nomes e emails dos usuários <br>
+        Adicione um campo de busca (filtrar por nome) <br>
+        Dica: use fetch(), filter() e includes() 
+    </p>
+
+    <input type="text" id="buscar" placeholder="Buscar usuário por nome">
+    <ul id="listaUsuarios"></ul>
+
+    <script>
+        const buscar = document.getElementById('buscar');
+        const listaUsuarios = document.getElementById('listaUsuarios');
+        let usuarios = [];
+
+        fetch("https://jsonplaceholder.typicode.com/users")
+            .then(res => res.json())
+            .then(dados => {
+                usuarios = dados;   
+                console.log("Usuários:", dados);
+            })
+            .catch(err => {
+                console.error("Erro:", err);
+            });
+
+        function mostrarUsuarios(lista) {
+            listaUsuarios.innerHTML = "";
+            lista.forEach(user => {
+                const item = document.createElement("li");
+                item.innerHTML = `<strong>${user.name}</strong> - ${user.email}`;
+                listaUsuarios.appendChild(item);
+            });
+        }
+
+        buscar.addEventListener("input", () => {
+            const termo = buscar.value.toLowerCase();
+            const filtrados = usuarios.filter(user =>
+                user.name.toLowerCase().includes(termo)
+            )
+            mostrarUsuarios(filtrados);
+        });
+    </script>
+</body>
+</html>
